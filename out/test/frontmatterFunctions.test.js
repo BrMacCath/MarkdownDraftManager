@@ -37,20 +37,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = __importStar(require("assert"));
 const removeFrontMatter_1 = require("../functions/frontmatter/removeFrontMatter");
 const frontMatterConstants_1 = require("../constants/frontMatterConstants");
+const extractFrontMatter_1 = require("../functions/frontmatter/extractFrontMatter");
 // Tests how it removes frontmatter. Here is some test data
 suite('Test frontmatter functions', () => {
-    const testFrontmatter = "---\ntest: Blah\n---\n";
+    const testFrontmatter = "---\ncomplete: false\ndraftNum: 4\n---\n";
     const testContent = "This is test content. This is here";
-    test("Removes frontmatter", () => {
+    const testFrontmatterArray = [true, false, 4];
+    // Here we test the remove frontmatter functions.
+    test("removeFrontMatter removes frontmatter", () => {
         const testText = testFrontmatter + testContent;
         assert.strictEqual((0, removeFrontMatter_1.removeFrontMatter)(testText), testContent);
     });
-    test("Does nothing", () => {
+    test("removeFrontMatter does nothing on files without frontmatter", () => {
         assert.strictEqual((0, removeFrontMatter_1.removeFrontMatter)(testContent), testContent);
     });
-    test("Without an end Indicator it should stay the same", () => {
+    test("removeFrontMatter does nothing on files without an end Indicator", () => {
         const testText = frontMatterConstants_1.frontMatterIndicator + testContent;
         assert.strictEqual((0, removeFrontMatter_1.removeFrontMatter)(testText), testText);
+    });
+    const failExtractFrontMatter = [false, false, -1];
+    // Here we test the extract frontmatter functions.
+    test("extractFrontMatter extracts frontmatter", () => {
+        const testText = testFrontmatter + testContent;
+        assert.deepStrictEqual((0, extractFrontMatter_1.extractFrontMatter)(testText), testFrontmatterArray);
+    });
+    test("extractFrontMatter fails file without frontmatter", () => {
+        assert.deepStrictEqual((0, extractFrontMatter_1.extractFrontMatter)(testContent), failExtractFrontMatter);
     });
 });
 //# sourceMappingURL=frontmatterFunctions.test.js.map
