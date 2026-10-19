@@ -1,5 +1,8 @@
 # markdown-draft-manager README
 
+
+[![Test](https://github.com/BrMacCath/MarkdownDraftManager/actions/workflows/tests.yml/badge.svg)](https://github.com/BrMacCath/MarkdownDraftManager/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/BrMacCath/MarkdownDraftManager/graph/badge.svg?token=RBFNGESDQ5)](https://codecov.io/gh/BrMacCath/MarkdownDraftManager)
 This is the README for your extension "markdown-draft-manager". After writing up a brief description, we recommend including the following sections.
 
 ## Features
