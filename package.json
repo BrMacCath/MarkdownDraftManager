@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "markdown-draft-manager.helloWorld",
-        "title": "Hello World"
+        "command": "markdown-draft-manager.updateMarkdownDraft",
+        "title": "Update Markdown Draft"
       }
     ]
   },

@@ -37,10 +37,19 @@ module.exports = __toCommonJS(extension_exports);
 var vscode = __toESM(require("vscode"));
 function activate(context) {
   console.log('Congratulations, your extension "markdown-draft-manager" is now active!');
-  const disposable = vscode.commands.registerCommand("markdown-draft-manager.helloWorld", () => {
-    vscode.window.showInformationMessage("Hello World from Markdown Draft Manager!");
+  const updateDraftCommand = vscode.commands.registerCommand("markdown-draft-manager.updateMarkdownDraft", () => {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      vscode.window.showWarningMessage("No file is currently open.");
+      return;
+    }
+    const document = editor.document;
+    if (document.languageId !== "markdown") {
+      vscode.window.showInformationMessage("The current file is not markdown.");
+      return;
+    }
   });
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(updateDraftCommand);
 }
 function deactivate() {
 }

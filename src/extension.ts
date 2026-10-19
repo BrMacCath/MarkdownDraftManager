@@ -13,13 +13,24 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('markdown-draft-manager.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Markdown Draft Manager!');
-	});
 
-	context.subscriptions.push(disposable);
+	const updateDraftCommand = vscode.commands.registerCommand('markdown-draft-manager.updateMarkdownDraft', () => {
+		const editor = vscode.window.activeTextEditor;
+
+		if (!editor) {
+		vscode.window.showWarningMessage('No file is currently open.');
+		return;
+		}
+
+		const document = editor.document;
+
+		if (document.languageId !== 'markdown') {
+			vscode.window.showInformationMessage('The current file is not markdown.');
+			return;
+		}
+  });
+  context.subscriptions.push(updateDraftCommand);
+
 }
 
 // This method is called when your extension is deactivated
