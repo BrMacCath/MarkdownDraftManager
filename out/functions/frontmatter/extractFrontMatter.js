@@ -4,22 +4,19 @@ exports.extractFrontMatter = extractFrontMatter;
 const frontMatterConstants_1 = require("../../constants/frontMatterConstants");
 // FrontMatterExtractor
 // Extract frontmatter with checks if it is not found.
-// Could this be a maybe type?
 function extractFrontMatter(content) {
-    const keepGoing = content.indexOf(frontMatterConstants_1.frontMatterEndIndicator) > -1;
-    let foundFrontmatter = false;
+    const foundFrontmatter = content.indexOf(frontMatterConstants_1.frontMatterEndIndicator) > -1;
     const newLine = "\n";
-    // Is there frontmatter?
-    if (!keepGoing) {
-        return [foundFrontmatter, []];
+    if (!foundFrontmatter) {
+        const frontMatterProperties = [];
+        return [foundFrontmatter, frontMatterProperties];
     }
-    foundFrontmatter = true;
     const frontmatterSplit = content.slice(frontMatterConstants_1.frontMatterIndicator.length, content.indexOf(frontMatterConstants_1.frontMatterEndIndicator))
         .split(newLine)
         .flatMap((line) => {
         return line.trim();
     })
-        .slice(1);
+        .filter((line) => line !== "");
     let frontMatterProperties = [];
     frontmatterSplit
         .map((line) => line.split(":"))
