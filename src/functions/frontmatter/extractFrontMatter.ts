@@ -1,49 +1,34 @@
-import { frontMatterEndIndicator } from "../../constants/frontMatterConstants";
+import { frontMatterEndIndicator, frontMatterIndicator } from "../../constants/frontMatterConstants";
 
 // FrontMatterExtractor
-// Extract frontmatter with checks if things aren't working.
+// Extract frontmatter with checks if it is not found.
+// Could this be a maybe type?
 
-export function extractFrontMatter(content:string):[boolean,boolean,number]{
+export function extractFrontMatter(content:string):[boolean,[string,string][]]{
     const keepGoing = content.indexOf(frontMatterEndIndicator)> -1;
     let foundFrontmatter = false;
-    let complete = false;
-    let draftNum = -1;
+    const newLine="\n";
     // Is there frontmatter?
     if(!keepGoing){
-        return [foundFrontmatter,complete,draftNum];
+        return [foundFrontmatter,[]];
     }
     foundFrontmatter = true;
-    const newLine="\n";
-
-    const frontmatterSplit= content.slice(0,content.indexOf(frontMatterEndIndicator))
+    
+    const frontmatterSplit= content.slice(frontMatterIndicator.length,content.indexOf(frontMatterEndIndicator))
     .split(newLine)
     .flatMap((line)=>{
         return line.trim();
     })
     .slice(1);
 
-    let key:string[] = [];
-    let value:string[]=[];
-    frontmatterSplit.forEach((line)=>{
-        const separatorSignifier= ":";
-        const keyVal = line.split(separatorSignifier);
-        key.push(keyVal[0].trim());
-        value.push(keyVal[1].trim());
-    } );
-    // Is there complete status?;
-    const completeKey= "complete";
-    const completeIndex = key.indexOf(completeKey);
-    if(completeIndex>-1){
-        complete = value[completeIndex].trim() === "true" ? true : false;
-    }
-    if(complete){return [foundFrontmatter,complete,draftNum];};
+    let frontMatterProperties:[string,string][] = [];
     
-    const draftKey= "draftNum";
-    const draftNumIndex = key.indexOf(draftKey);
-    if (draftNumIndex ===-1){
-        return [foundFrontmatter,complete,draftNum];
-    }
-    draftNum = Number(value[draftNumIndex]);
+    frontmatterSplit
+    .map((line) => line.split(":"))
+    .filter((keyVal) => keyVal.length === 2)
+    .forEach(([key, value]) => {
+        frontMatterProperties.push([key.trim(), value.trim()]);
+    });
 
-    return [foundFrontmatter,complete,draftNum];
+    return [foundFrontmatter,frontMatterProperties];
 }
