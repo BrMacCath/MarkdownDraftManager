@@ -42,7 +42,7 @@ const extractFrontMatter_1 = require("../functions/frontmatter/extractFrontMatte
 suite('Test frontmatter functions', () => {
     const testFrontmatter = "---\ncomplete: false\ndraftNum: 4\n---\n";
     const testContent = "This is test content. This is here";
-    const testFrontmatterArray = [true, false, 4];
+    const testFrontmatterArray = [true, [["complete", "false"], ['draftNum', '4']]];
     // Here we test the remove frontmatter functions.
     test("removeFrontMatter removes frontmatter", () => {
         const testText = testFrontmatter + testContent;
@@ -55,7 +55,7 @@ suite('Test frontmatter functions', () => {
         const testText = frontMatterConstants_1.frontMatterIndicator + testContent;
         assert.strictEqual((0, removeFrontMatter_1.removeFrontMatter)(testText), testText);
     });
-    const failExtractFrontMatter = [false, false, -1];
+    const failExtractFrontMatter = [false, []];
     // Here we test the extract frontmatter functions.
     test("extractFrontMatter extracts frontmatter", () => {
         const testText = testFrontmatter + testContent;
