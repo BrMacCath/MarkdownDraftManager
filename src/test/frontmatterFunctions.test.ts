@@ -10,7 +10,7 @@ suite('Test frontmatter functions',() =>{
 
     const testFrontmatter ="---\ncomplete: false\ndraftNum: 4\n---\n";
     const testContent = "This is test content. This is here";
-    const testFrontmatterArray:[boolean,boolean,number] = [true,false,4];
+    const testFrontmatterArray:[boolean,[string,string][]] = [true,[["complete","false"], ['draftNum','4'] ]];
     // Here we test the remove frontmatter functions.
     test("removeFrontMatter removes frontmatter",()=>{
         const testText = testFrontmatter+testContent;
@@ -26,7 +26,7 @@ suite('Test frontmatter functions',() =>{
         assert.strictEqual(removeFrontMatter(testText),testText);
     });
 
-    const failExtractFrontMatter: [boolean,boolean,number]= [false,false,-1];
+    const failExtractFrontMatter: [boolean,[string,string][]] = [false,[]];
 
     // Here we test the extract frontmatter functions.
     test("extractFrontMatter extracts frontmatter",()=>{
