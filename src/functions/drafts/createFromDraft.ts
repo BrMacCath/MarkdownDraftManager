@@ -2,9 +2,17 @@ import { splitParagraphsFrontMatter } from "../paragraphs/splitParagraphsFrontMa
 import { splitParagraphsNoFrontMatter } from "../paragraphs/splitParagraphsNoFrontMatter";
 import { createDraftTitle } from "./createDraftTitle";
 import { stringifyNumber } from "./stringifyNumber";
+import * as vscode from 'vscode';
 
 
-export function createFromDraft(draft:string,paragraphSeparator:string,oldDraftNum:number, topicFrontMatterSeparator:string,haveTopicFrontMatter:boolean,rewriteLineSignifier:string,commentLineSignifier:string=""){
+export function createFromDraft(draft:string,oldDraftNum:number){
+    const config = vscode.workspace.getConfiguration('myExtension');
+    const paragraphSeparator = config.get<string>("draftStyle.paragraphSeparator", '+---+');
+    const topicFrontMatterSeparator = config.get<string>("draftStyle.topicFrontmatterSeparator","*---*");
+    const haveTopicFrontMatter = config.get<boolean>("draftStyle.haveTopicFrontmatterSeparator",true);
+    const rewriteLineSignifier = config.get<string>("draftStyle.rewriteLineSignifier",">");
+    const commentLineSignifier =  config.get<string>("draftStyle.commentSignifier");
+
     const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n";
     // Select the content from the current draft.
     const currentDraftTitle = createDraftTitle(oldDraftNum);

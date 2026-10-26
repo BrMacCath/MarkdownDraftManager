@@ -4,8 +4,15 @@ import * as vscode from "vscode";
 // First it should have a completed draft added onto the end of the draft.
 // Second it should add onto the 
 // Return [frontmatter,content]
-export function createFromFirstDraft(draft:string,paragraphSeparator:string, topicFrontMatterSeparator:string,haveTopicFrontMatter:boolean,rewriteLineNotifier:string,commentLineSignifier:string=""){
-    const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineNotifier +" \n\n";
+export function createFromFirstDraft(draft:string){
+    const config = vscode.workspace.getConfiguration('myExtension');
+    const paragraphSeparator = config.get<string>("draftStyle.paragraphSeparator", '+---+');
+    const topicFrontMatterSeparator = config.get<string>("draftStyle.topicFrontmatterSeparator","*---*");
+    const haveTopicFrontMatter = config.get<boolean>("draftStyle.haveTopicFrontmatterSeparator",true);
+    const rewriteLineSignifier = config.get<string>("draftStyle.rewriteLineSignifier",">");
+    const commentLineSignifier =  config.get<string>("draftStyle.commentSignifier");
+    
+    const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n";
     let paragraphs = draft.split(paragraphSeparator);
     let splitParagraph: [string,string[]][] = [];
     if( !haveTopicFrontMatter){
