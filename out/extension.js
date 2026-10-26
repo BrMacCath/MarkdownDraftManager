@@ -32,12 +32,16 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
 exports.deactivate = deactivate;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = __importStar(require("vscode"));
+const createDraft_1 = __importDefault(require("./functions/drafts/createDraft"));
 function activate(context) {
     // Command to update a markdown file 
     // First we ensure it is a md file and then edit with
@@ -53,7 +57,8 @@ function activate(context) {
             vscode.window.showInformationMessage('The current file is not markdown.');
             return;
         }
-        // const newDraft = newDraft(document.getText())
+        const newte = (0, createDraft_1.default)(document.getText());
+        console.log(newte);
         const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
         const success = await editor.edit(editBuilder => {
             //editBuilder.replace(fullRange, newDraft);

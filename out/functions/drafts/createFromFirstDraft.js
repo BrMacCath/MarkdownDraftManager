@@ -1,0 +1,101 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createFromFirstDraft = createFromFirstDraft;
+const vscode = __importStar(require("vscode"));
+//What should this do?
+// Add onto the draft in two ways.
+// First it should have a completed draft added onto the end of the draft.
+// Second it should add onto the 
+// Return [frontmatter,content]
+function createFromFirstDraft(draft) {
+    const config = vscode.workspace.getConfiguration('myExtension');
+    const paragraphSeparator = config.get("draftStyle.paragraphSeparator", '+---+');
+    const topicFrontMatterSeparator = config.get("draftStyle.topicFrontmatterSeparator", "*---*");
+    const haveTopicFrontMatter = config.get("draftStyle.haveTopicFrontmatterSeparator", true);
+    const rewriteLineSignifier = config.get("draftStyle.rewriteLineSignifier", ">");
+    const commentLineSignifier = config.get("draftStyle.commentSignifier");
+    const newLineSeperator = "\n" + commentLineSignifier + " \n" + rewriteLineSignifier + " \n\n";
+    let paragraphs = draft.split(paragraphSeparator);
+    let splitParagraph = [];
+    if (!haveTopicFrontMatter) {
+        paragraphs.forEach((paragraph) => {
+            const paraContent = paragraph.split(".");
+            splitParagraph.push(["", paraContent]);
+        });
+    }
+    else {
+        paragraphs.forEach((paragraph) => {
+            const temp = paragraph.split(topicFrontMatterSeparator);
+            if (temp.length !== 2) {
+                vscode.window.showInformationMessage("Something has gone wrong. Length is " + temp.length);
+            }
+            const paraContent = temp[1].split(".");
+            splitParagraph.push([temp[0], paraContent]);
+        });
+    }
+    // Complete Draft
+    let completeDraft = [];
+    let newDraft = [];
+    splitParagraph.forEach((content) => {
+        const sentences = content[1].filter((t) => {
+            return t.trim() !== "";
+        });
+        completeDraft.push(sentences.join(".") + ".");
+    });
+    // Make new draft based on the topic front matter.
+    if (!haveTopicFrontMatter) {
+        splitParagraph.forEach((content) => {
+            const sentences = content[1].filter((t) => { t.trim() !== ""; });
+            newDraft.push(sentences.join(newLineSeperator) + newLineSeperator);
+        });
+    }
+    else {
+        splitParagraph.forEach((content) => {
+            const topicFrontMatter = content[0];
+            const sentences = content[1].filter((t) => {
+                return t.trim() !== "";
+            });
+            newDraft.push(topicFrontMatter + topicFrontMatterSeparator + sentences.join(newLineSeperator) + newLineSeperator);
+        });
+    }
+    // New Draft
+    let newContent = "";
+    newContent += "\n\n## Complete First Draft\n\n" + completeDraft.join("\n\n") + "\n\n";
+    newContent += "# Second Draft\n\n" + newDraft.join(paragraphSeparator);
+    draft += newContent;
+    return draft;
+}
+//# sourceMappingURL=createFromFirstDraft.js.map
