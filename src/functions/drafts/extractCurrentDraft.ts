@@ -1,3 +1,4 @@
+import { createDraftTitle } from "./createDraftTitle";
 import { removeInlineComments } from "./removeInlineComments";
 
 
@@ -5,7 +6,7 @@ export function extractCurrentDraft(content:string,draftNum:number):[boolean,str
     
     const oldDraftNum = draftNum > 1 ? draftNum-1 : draftNum;
 
-    const previousDraftTitle ="test";// createCompleteDraftTitle(oldDraftNum);
+    const previousDraftTitle = createDraftTitle(oldDraftNum);
     const titleInd = content.indexOf(previousDraftTitle); 
     if (titleInd ===-1){
         const continueForward = false;
