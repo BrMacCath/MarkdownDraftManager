@@ -6,17 +6,11 @@ import { splitContent } from "./splitContent";
 export default function createDraft(fileText:string){
     let [tempFrontMatter,content] = splitContent(fileText);
     let [frontMatter,oldDraftNum] = updateFrontmatter(tempFrontMatter);    
+    
+    const updatedContent = oldDraftNum ===1 ? 
+                createFromFirstDraft(content):createFromDraft(content,oldDraftNum);
 
-    if (oldDraftNum === 1){
-        // Here we add the new title for the 
-        const updatedContent = createFromFirstDraft(content);
-        const updatedFile = frontMatter + updatedContent;
-        return updatedFile;
-    }
-    else{
-        const updatedContent = createFromDraft(content,oldDraftNum);
-        const updatedFile = frontMatter + updatedContent;
-        return updatedFile;
-    }
-
+    const updatedFile = frontMatter + updatedContent;
+    return updatedFile;
+    
 }
