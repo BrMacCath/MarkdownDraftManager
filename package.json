@@ -17,6 +17,72 @@
         "command": "markdown-draft-manager.updateMarkdownDraft",
         "title": "Update Markdown Draft"
       }
+    ],
+    "configuration": [
+      {
+        "title": "Frontmatter",
+        "order": 1,
+        "properties": {
+          "myExtension.frontmatter.draftNumIndicator": {
+            "type": "string",
+            "default": "draftNum",
+            "description": "Frontmatter key used to track the draft number."
+          },
+          "myExtension.frontmatter.draftStyleIndicator": {
+            "type": "string",
+            "default": "draftStyle",
+            "description": "Frontmatter key used to record the draft style."
+          }
+        }
+      },
+      {
+        "title": "Draft Style",
+        "order": 2,
+        "properties": {
+          "myExtension.draftStyle.style": {
+            "type": "string",
+            "default": "Peterson",
+            "editPresentation": "multilineText",
+            "description": "Describe the style you want drafts written in."
+          },
+          "myExtension.draftStyle.paragraphSeparator": {
+            "type": "string",
+            "default": "+---+",
+            "editPresentation": "multilineText",
+            "description": "How do you want the draft paragraphs separated?"
+          },
+          "myExtension.draftStyle.haveTopicFrontmatterSeparator": {
+            "type": "boolean",
+            "default": false,
+            "editPresentation": "multilineText",
+            "description": "How do you want the topic frontmatter separated?"
+          },
+          "myExtension.draftStyle.topicFrontmatterSeparator": {
+            "type": "string",
+            "default": "*---*",
+            "editPresentation": "multilineText",
+            "description": "How do you want the topic frontmatter separated?"
+          },
+          "myExtension.draftStyle.haveLineComments": {
+            "type": "boolean",
+            "default": false,
+            "editPresentation": "multilineText",
+            "description": "Do you want line comments?"
+          },
+          "myExtension.draftStyle.commentSignifier": {
+            "type": "string",
+            "default": "*",
+            "editPresentation": "multilineText",
+            "description": "How do you want to signify a comment line?"
+          },
+          "myExtension.draftStyle.rewriteLineSignifier": {
+            "type": "string",
+            "default": ">",
+            "editPresentation": "multilineText",
+            "description": "How do you want to signify a line to rewrite?"
+          }
+        }
+      }
     ]
   },
   "scripts": {
