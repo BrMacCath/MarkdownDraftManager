@@ -22,15 +22,15 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		const newte = createDraft(document.getText());
-		console.log(newte);
+		const newDraft = createDraft(document.getText());
+
 		const fullRange = new vscode.Range(
 			document.positionAt(0),
 			document.positionAt(document.getText().length)
 		);
 
 		const success = await editor.edit(editBuilder => {
-			//editBuilder.replace(fullRange, newDraft);
+			editBuilder.replace(fullRange, newDraft);
 		});
 
 		if (!success) {
