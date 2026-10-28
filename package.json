@@ -33,6 +33,12 @@
             "default": "draftStyle",
             "description": "Frontmatter key used to record the draft style."
           }
+          ,
+          "myExtension.frontmatter.completeSectionIndicator": {
+            "type": "string",
+            "default": "completeSection",
+            "description": "Heading for the complete section in the draft."
+          }
         }
       },
       {
