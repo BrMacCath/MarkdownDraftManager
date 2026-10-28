@@ -8,8 +8,14 @@ export function splitContent(text:string):[string,string] {
         // This needs to be an error function instead of just a notice
         return ["",""];
     }
-    const index = text.indexOf(frontMatterEndIndicator) + frontMatterEndIndicator.length;
-    const frontMatter = text.slice(0, index);
-    const content = text.slice(index);
+    const frontMatterEndIndex= text.indexOf(frontMatterEndIndicator);
+    if (frontMatterEndIndex !== -1) {
+        vscode.window.showInformationMessage("Front matter ending is missing");
+        // This needs to be an error function instead of just a notice
+        return ["",""];
+    }
+
+    const frontMatter = text.slice(0, frontMatterEndIndex).trim();
+    const content = text.slice(frontMatterEndIndex + frontMatterEndIndicator.length).trim();
     return [frontMatter,content];
 }
