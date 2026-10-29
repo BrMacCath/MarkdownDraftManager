@@ -1,7 +1,7 @@
 {
-  "name": "markdown-draft-manager",
-  "displayName": "Markdown Draft Manager",
-  "description": "Creates new drafts from markdown files",
+  "name": "mdsvex-markdown-draft-manager",
+  "displayName": "Markdown Draft Manager for mdsvex",
+  "description": "Creates new drafts from markdown files to be used in mdsvex files",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.140.0"
