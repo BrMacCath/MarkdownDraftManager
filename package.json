@@ -58,7 +58,7 @@
           },
           "myExtension.draftStyle.haveTopicFrontmatterSeparator": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "editPresentation": "multilineText",
             "description": "How do you want the topic frontmatter separated?"
           },
@@ -70,7 +70,7 @@
           },
           "myExtension.draftStyle.haveLineComments": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "editPresentation": "multilineText",
             "description": "Do you want line comments?"
           },
