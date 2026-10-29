@@ -9,7 +9,7 @@ import { splitContent } from "./splitContent";
 
 export default function createDraft(fileText:string){
     let [tempFrontMatter,content] = splitContent(fileText);
-    let [frontMatter,oldDraftNum] = updateFrontmatter(tempFrontMatter);  
+    let [frontMatter,oldDraftNum] = updateFrontmatter();  
     const updatedContent = oldDraftNum === 1 ? 
                 createFromFirstDraft(content):createFromDraft(content,oldDraftNum);
     const updatedFile = frontMatter + "\n" + updatedContent;
