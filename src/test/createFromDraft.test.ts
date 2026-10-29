@@ -14,7 +14,7 @@ suite('Create draft function checks',()=>{
         await vscode.window.showTextDocument(doc);
         
         const secondDraft = updateFrontmatter();
-        console.log(secondDraft);
+        console.log("secondDraft: "+ secondDraft);
         assert.ok(secondDraft.includes('draftNum: 4'));
         assert.ok(secondDraft.includes('completeSection: ## Complete Third Draft') );
         assert.ok(secondDraft.includes('testProperty: here'));
