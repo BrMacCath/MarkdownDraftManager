@@ -12,4 +12,7 @@ suite('Test frontmatter constants',() =>{
 	test('frontmatter end indicator Constant',()=>{
 		assert.strictEqual(frontMatterEndIndicator,'\n---\n');
 	});
+	test('New Line Constant',()=>{
+		assert.strictEqual(frontMatterEndIndicator,'\n');
+	});
 });
