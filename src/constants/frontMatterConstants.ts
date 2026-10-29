@@ -3,3 +3,4 @@
 
 export const frontMatterIndicator = "---";
 export const frontMatterEndIndicator= '\n---\n';
+export const newLine = "\n";
