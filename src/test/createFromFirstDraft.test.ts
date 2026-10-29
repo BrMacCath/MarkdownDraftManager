@@ -22,8 +22,7 @@ suite('First Draft Create function checks',()=>{
         });
         await vscode.window.showTextDocument(doc);
         
-        const secondDraft = updateFrontmatter();
-        console.log("secondDraft: "+ secondDraft);
+        const [secondDraft,_] = updateFrontmatter();
         assert.ok(secondDraft.includes('draftNum: 2'));
         assert.ok(secondDraft.includes('completeSection: ## Complete First Draft') );
         assert.ok(secondDraft.includes('testProperty: here'));
