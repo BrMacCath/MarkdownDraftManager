@@ -13,7 +13,7 @@ suite('Create draft function checks',()=>{
         });
         await vscode.window.showTextDocument(doc);
         
-        const secondDraft = updateFrontmatter();
+        const [secondDraft,_] = updateFrontmatter();
         console.log("secondDraft: "+ secondDraft);
         assert.ok(secondDraft.includes('draftNum: 4'));
         assert.ok(secondDraft.includes('completeSection: ## Complete Third Draft') );
