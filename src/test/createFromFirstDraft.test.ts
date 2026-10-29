@@ -15,7 +15,7 @@ import * as vscode from 'vscode';
 
 suite('First Draft Create function checks',()=>{
 
-    test("Frontmatter changed correctly",async()=>{
+    test("Check frontmatter will update correctly",async()=>{
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
             content: '---\ndraftNum: 1\ntestProperty: here\n---\nBody text',
@@ -28,6 +28,16 @@ suite('First Draft Create function checks',()=>{
         assert.ok(secondDraft.includes('testProperty: here'));
     });
     test("Check the content updates correctly",()=>{
+        //create from first draft
+        // const doc = await vscode.workspace.openTextDocument({
+        //     language: 'markdown',
+        //     content: '---\ndraftNum: 1\ntestProperty: here\n---\nBody text',
+        // });
+        // await vscode.window.showTextDocument(doc);
+
+        // Create from first draft
+    });
+    test('Test that executing the command on a first draft works correctly',()=>{
 
     });
 }
