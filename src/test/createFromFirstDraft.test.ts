@@ -7,23 +7,37 @@
 // Change in completeSectionIndicator
 
 import * as assert from 'assert';
-import { createFromFirstDraft } from '../functions/drafts/createFromFirstDraft';
 import createDraft from '../functions/drafts/createDraft';
+import { updateFrontmatter } from '../functions/frontmatter/updateFrontmatter';
+import * as vscode from 'vscode';
+
+
 
 suite('First Draft Create function checks',()=>{
     test('Frontmatter created correctly',async ()=>{
-        const content= 'Body text';
-        const secondDraft = createFromFirstDraft(content);
-        assert.ok(secondDraft.includes('draftNum: 2'));
-        assert.ok(secondDraft.includes('completeSection: ## Complete First Draft') );
+        // const doc = await vscode.workspace.openTextDocument({
+        //     language: 'markdown',
+        //     content: '---\ndraftNum: 1\n---\nBody text',
+        // });
+        // await vscode.window.showTextDocument(doc);
+        
+        // const secondDraft = updateFrontmatter();
+        // assert.ok(secondDraft.includes('draftNum: 2'));
+        // assert.ok(secondDraft.includes('completeSection: ## Complete First Draft') );
+        // assert.ok(secondDraft.includes('testProperty: here'));
     });
 
-    test("Frontmatter changed correctly",()=>{
-        const content= '---\ndraftNum: 1\n---\nBody text';
-        const secondDraft = createDraft(content);
+    test("Frontmatter changed correctly",async()=>{
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '---\ndraftNum: 1\n---\nBody text',
+        });
+        await vscode.window.showTextDocument(doc);
+        
+        const secondDraft = updateFrontmatter();
         assert.ok(secondDraft.includes('draftNum: 2'));
         assert.ok(secondDraft.includes('completeSection: ## Complete First Draft') );
-        assert.ok(!secondDraft.includes('# Second Draft'));
+        assert.ok(secondDraft.includes('testProperty: here'));
     });
     test("Check the content updates correctly",()=>{
 

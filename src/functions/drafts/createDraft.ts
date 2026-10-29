@@ -8,7 +8,7 @@ import { splitContent } from "./splitContent";
 // draft to the rest so those are isolated apart.
 
 export default function createDraft(fileText:string){
-    let [tempFrontMatter,content] = splitContent(fileText);
+    let [_,content] = splitContent(fileText);
     let [frontMatter,oldDraftNum] = updateFrontmatter();  
     const updatedContent = oldDraftNum === 1 ? 
                 createFromFirstDraft(content):createFromDraft(content,oldDraftNum);
