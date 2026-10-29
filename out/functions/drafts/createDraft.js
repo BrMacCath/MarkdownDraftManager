@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = createDraft;
+const testUpdateFrontmatter_1 = require("../frontmatter/testUpdateFrontmatter");
 const updateFrontmatter_1 = require("../frontmatter/updateFrontmatter");
 const createFromDraft_1 = require("./createFromDraft");
 const createFromFirstDraft_1 = require("./createFromFirstDraft");
@@ -13,7 +14,11 @@ function createDraft(fileText) {
     let [frontMatter, oldDraftNum] = (0, updateFrontmatter_1.updateFrontmatter)(tempFrontMatter);
     const updatedContent = oldDraftNum === 1 ?
         (0, createFromFirstDraft_1.createFromFirstDraft)(content) : (0, createFromDraft_1.createFromDraft)(content, oldDraftNum);
-    const updatedFile = frontMatter + updatedContent;
+    console.log(updatedContent);
+    console.log("test");
+    const test = (0, testUpdateFrontmatter_1.testUpdateFrontmatter)();
+    console.log(test);
+    const updatedFile = frontMatter + "\n" + updatedContent;
     return updatedFile;
 }
 //# sourceMappingURL=createDraft.js.map

@@ -35,12 +35,14 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createFromFirstDraft = createFromFirstDraft;
 const vscode = __importStar(require("vscode"));
+const frontMatterConstants_1 = require("../../constants/frontMatterConstants");
 //What should this do?
 // Add onto the draft in two ways.
 // First it should have a completed draft added onto the end of the draft.
 // Second it should add onto the 
 // Return [frontmatter,content]
 function createFromFirstDraft(draft) {
+    // config settings
     const config = vscode.workspace.getConfiguration('myExtension');
     const paragraphSeparator = config.get("draftStyle.paragraphSeparator", '+---+');
     const topicFrontMatterSeparator = config.get("draftStyle.topicFrontmatterSeparator", "*---*");
@@ -48,6 +50,12 @@ function createFromFirstDraft(draft) {
     const rewriteLineSignifier = config.get("draftStyle.rewriteLineSignifier", ">");
     const commentLineSignifier = config.get("draftStyle.commentSignifier");
     const newLineSeperator = "\n" + commentLineSignifier + " \n" + rewriteLineSignifier + " \n\n";
+    // Remove frontmatter
+    if (draft.slice(0, 3) === frontMatterConstants_1.frontMatterIndicator) {
+        draft = draft.slice(3);
+        const frontmatterIndex = draft.indexOf(frontMatterConstants_1.frontMatterIndicator);
+        draft = draft.slice(frontmatterIndex + frontMatterConstants_1.frontMatterIndicator.length);
+    }
     let paragraphs = draft.split(paragraphSeparator);
     let splitParagraph = [];
     if (!haveTopicFrontMatter) {

@@ -57,11 +57,10 @@ function activate(context) {
             vscode.window.showInformationMessage('The current file is not markdown.');
             return;
         }
-        const newte = (0, createDraft_1.default)(document.getText());
-        console.log(newte);
+        const newDraft = (0, createDraft_1.default)(document.getText());
         const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
         const success = await editor.edit(editBuilder => {
-            //editBuilder.replace(fullRange, newDraft);
+            editBuilder.replace(fullRange, newDraft);
         });
         if (!success) {
             vscode.window.showErrorMessage('Failed to edit the document.');

@@ -32,20 +32,38 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateFrontmatter = updateFrontmatter;
 const vscode = __importStar(require("vscode"));
+const yaml_1 = __importDefault(require("yaml"));
+const createDraftTitle_1 = require("../drafts/createDraftTitle");
+// The function does not work well with the first draft. Go through this again.
+// Strip --- above and below.
 function updateFrontmatter(frontmatter) {
-    const draftNumIndicator = vscode.workspace.getConfiguration('myExtension').get('frontmatter.draftNumIndicator', "draftNum");
-    const draftInd = frontmatter.indexOf(draftNumIndicator);
-    if (draftInd === -1) {
-        vscode.window.showInformationMessage("This file does not contain the frontmatter to indicate the draft number.");
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || editor.document.languageId !== "markdown") {
+        return ["", 0];
     }
-    let tempFile = frontmatter.slice(draftInd + draftNumIndicator.length + 1);
-    const endLineInd = tempFile.indexOf("\n");
-    const draftNum = Number(tempFile.slice(0, endLineInd).trim());
-    const newDraftNum = draftNum + 1;
-    frontmatter = frontmatter.replace(draftNumIndicator + ": " + draftNum, draftNumIndicator + ": " + newDraftNum);
-    return [frontmatter, draftNum];
+    const doc = editor.document;
+    const m = doc.getText().match(/^---\r?\n([\s\S]*?)\r?\n---(?=\r?\n|$)/);
+    if (!m) {
+        return ["", 0];
+    } // no frontmatter
+    const draftNumIndicator = vscode.workspace.getConfiguration('myExtension').get('frontmatter.draftNumIndicator', "draftNum");
+    const completeSectionIndicator = vscode.workspace.getConfiguration('myExtension').get('frontmatter.completeSectionIndicator', "completeSection");
+    const ydoc = yaml_1.default.parseDocument(m[1]);
+    const draftNum = ydoc.get(draftNumIndicator);
+    if (typeof draftNum !== "number") {
+        return ["", 0];
+    }
+    ydoc.set(draftNumIndicator, draftNum + 1);
+    ydoc.set(completeSectionIndicator, (0, createDraftTitle_1.createDraftTitle)(draftNum));
+    const fm = ydoc.toString().trimEnd();
+    const eol = doc.eol === vscode.EndOfLine.CRLF ? "\r\n" : "\n";
+    const replacement = fm ? `---${eol}${fm}${eol}---` : "";
+    return [replacement, draftNum];
 }
 //# sourceMappingURL=updateFrontmatter.js.map

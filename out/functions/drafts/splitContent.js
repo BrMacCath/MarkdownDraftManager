@@ -37,15 +37,22 @@ exports.splitContent = splitContent;
 const vscode = __importStar(require("vscode"));
 const frontMatterConstants_1 = require("../../constants/frontMatterConstants");
 function splitContent(text) {
-    const start_file = text.slice(0, 3);
-    if (frontMatterConstants_1.frontMatterIndicator !== start_file) {
+    const startFile = text.slice(0, 3);
+    if (frontMatterConstants_1.frontMatterIndicator !== startFile) {
         vscode.window.showInformationMessage("Front matter is missing");
         // This needs to be an error function instead of just a notice
         return ["", ""];
     }
-    const index = text.indexOf(frontMatterConstants_1.frontMatterEndIndicator) + frontMatterConstants_1.frontMatterEndIndicator.length;
-    const frontMatter = text.slice(0, index);
-    const content = text.slice(index);
+    const frontMatterEndIndex = text.indexOf(frontMatterConstants_1.frontMatterEndIndicator);
+    if (frontMatterEndIndex !== -1) {
+        vscode.window.showInformationMessage("Front matter ending is missing");
+        // This needs to be an error function instead of just a notice
+        return ["", ""];
+    }
+    const frontMatter = text.slice(0, frontMatterEndIndex).trim();
+    let content = text.slice(frontMatterEndIndex + frontMatterConstants_1.frontMatterEndIndicator.length).trim();
+    const endFrontIndex = content.indexOf(frontMatterConstants_1.frontMatterIndicator) + frontMatterConstants_1.frontMatterIndicator.length;
+    content = content.slice(endFrontIndex).trim();
     return [frontMatter, content];
 }
 //# sourceMappingURL=splitContent.js.map

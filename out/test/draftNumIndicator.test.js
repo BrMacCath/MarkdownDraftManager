@@ -82,7 +82,7 @@ suite('Configuration tests', () => {
             content: '---\nrevision: 1\n---\nBody text',
         });
         await vscode.window.showTextDocument(doc);
-        await vscode.commands.executeCommand('markdown-draft-manager.updateDraftCommand');
+        await vscode.commands.executeCommand('markdown-draft-manager.updateMarkdownDraft');
         assert.ok(doc.getText().includes('revision: 2'));
     });
 });
