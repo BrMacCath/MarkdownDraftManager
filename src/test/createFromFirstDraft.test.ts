@@ -7,13 +7,32 @@
 // Change in completeSectionIndicator
 
 import * as assert from 'assert';
-import createDraft from '../functions/drafts/createDraft';
 import { updateFrontmatter } from '../functions/frontmatter/updateFrontmatter';
 import * as vscode from 'vscode';
 
 
 
 suite('First Draft Create function checks',()=>{
+    const config = vscode.workspace.getConfiguration('myExtension');
+    const keyHaveTopicFrontmatter = "draftStyle.haveTopicFrontmatterSeparator";
+    const keyHaveComments = "draftStyle.haveLineComments";
+    let originalHaveTopicFrontmatter: unknown;
+    let originalHaveComments: unknown;
+
+    setup(() => {
+        // inspect() tells you what is set at each level, not just the effective value
+        originalHaveTopicFrontmatter = config.inspect(keyHaveTopicFrontmatter)?.globalValue;
+        originalHaveComments = config.inspect(keyHaveComments)?.globalValue;
+    });
+
+    teardown(async () => {
+    // passing undefined removes the setting from that level
+        await config
+            .update(keyHaveTopicFrontmatter, originalHaveTopicFrontmatter, vscode.ConfigurationTarget.Global);
+        await config
+            .update(keyHaveComments, originalHaveComments, vscode.ConfigurationTarget.Global);
+    });
+    
 
     test("Check frontmatter will update correctly",async()=>{
         const doc = await vscode.workspace.openTextDocument({
@@ -37,8 +56,20 @@ suite('First Draft Create function checks',()=>{
 
         // Create from first draft
     });
-    test('Test that executing the command on a first draft works correctly',()=>{
+    test("Check create from first Draft will make a new draft. Have Topic Frontmatter and comments",()=>{
+        // const config = vscode.workspace.getConfiguration('myExtension');
+        // await config.update('frontmatter.draftNumIndicator', 'revision', vscode.ConfigurationTarget.Global);
+            
+    });
 
+    test("Check create from first Draft will make a new draft. Have Topic Frontmatter, no comments",()=>{
+        // const config = vscode.workspace.getConfiguration('myExtension');
+        // await config.update('frontmatter.draftNumIndicator', 'revision', vscode.ConfigurationTarget.Global);
+    });
+
+    test("Check create from first Draft will make a new draft. No Topic Frontmatter or comments",()=>{
+        // const config = vscode.workspace.getConfiguration('myExtension');
+        // await config.update('frontmatter.draftNumIndicator', 'revision', vscode.ConfigurationTarget.Global);
     });
 }
 );
