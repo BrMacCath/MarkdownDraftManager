@@ -1,21 +1,31 @@
 // The checks from
-
+import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { createFromDraft } from '../functions/drafts/createFromDraft';
+import { updateFrontmatter } from '../functions/frontmatter/updateFrontmatter';
 
 suite('Create draft function checks',()=>{
 
-    test("Frontmatter for first draft changed correctly",()=>{
-        const content= '---\ndraftNum: 1\ntestProperty: here\n---\nBody text';
-        const secondDraft = createFromDraft(content,1);
+    test("Frontmatter for first draft changed correctly",async()=>{
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '---\nrevision: 1\n---\nBody text',
+        });
+        await vscode.window.showTextDocument(doc);
+        
+        const secondDraft = updateFrontmatter();
         assert.ok(secondDraft.includes('draftNum: 2'));
         assert.ok(secondDraft.includes('completeSection: ## Complete First Draft') );
         assert.ok(secondDraft.includes('testProperty: here'));
     });
 
-    test("Frontmatter changed correctly",()=>{
-        const content= '---\ndraftNum: 3\ntestProperty: here\n---\nBody text';
-        const secondDraft = createFromDraft(content,3);
+    test("Frontmatter changed correctly",async()=>{
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '---\ndraftNum: 1\n---\nBody text',
+        });
+        await vscode.window.showTextDocument(doc);
+        
+        const secondDraft = updateFrontmatter();
         assert.ok(secondDraft.includes('draftNum: 4'));
         assert.ok(secondDraft.includes('completeSection: ## Complete Third Draft') );
         assert.ok(secondDraft.includes('testProperty: here'));
