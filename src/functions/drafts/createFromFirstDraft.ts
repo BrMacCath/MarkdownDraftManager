@@ -66,7 +66,7 @@ export function createFromFirstDraft(draft:string){
     // New Draft
     let newContent = "";
     newContent += "\n\n## Complete First Draft\n\n" + completeDraft.join("\n\n")+"\n\n";
-    newContent += "# Second Draft\n\n" + newDraft.join(paragraphSeparator);
+    newContent += "# Second Draft\n\n"+ paragraphSeparator + newDraft.join(paragraphSeparator);
     draft += newContent;
     return draft;
 }
