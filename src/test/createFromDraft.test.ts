@@ -9,7 +9,7 @@ suite('Create draft function checks',()=>{
     test("Frontmatter changed correctly",async()=>{
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
-            content: '---\ndraftNum: 1\n---\nBody text',
+            content: '---\ndraftNum: 3\n---\nBody text',
         });
         await vscode.window.showTextDocument(doc);
         
