@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { frontMatterIndicator } from "../../constants/frontMatterConstants";
-import { createDraftTitle } from "./createDraftTitle";
 //What should this do?
 // Add onto the draft in two ways.
 // First it should have a completed draft added onto the end of the draft.

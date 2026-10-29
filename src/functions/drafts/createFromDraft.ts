@@ -1,11 +1,10 @@
 import { splitParagraphsFrontMatter } from "../paragraphs/splitParagraphsFrontMatter";
 import { splitParagraphsNoFrontMatter } from "../paragraphs/splitParagraphsNoFrontMatter";
-import { createDraftTitle } from "./createDraftTitle";
 import { stringifyNumber } from "./stringifyNumber";
 import * as vscode from 'vscode';
 
 
-export function createFromDraft(draft:string,oldDraftNum:number){
+export function createFromDraft(draft:string,draftNum:number){
     const config = vscode.workspace.getConfiguration('myExtension');
     const paragraphSeparator = config.get<string>("draftStyle.paragraphSeparator", '+---+');
     const topicFrontMatterSeparator = config.get<string>("draftStyle.topicFrontmatterSeparator","*---*");
@@ -15,19 +14,18 @@ export function createFromDraft(draft:string,oldDraftNum:number){
 
     const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n";
     // Select the content from the current draft.
-    const currentDraftTitle = createDraftTitle(oldDraftNum);
+    const currentDraftTitle = "# " + stringifyNumber(draftNum) +" Draft";
     const contentIndex = draft.indexOf(currentDraftTitle) + currentDraftTitle.length;
     const contentDraft = draft.slice(contentIndex);
-    let paragraphs = contentDraft.split(paragraphSeparator);
+    let paragraphs = contentDraft.split(paragraphSeparator).filter(t=>{return t.trim() !== "";});
     let splitParagraph: [string,string[]][] = [];
-
 
     if(!haveTopicFrontMatter){
         splitParagraph =splitParagraphsNoFrontMatter(paragraphs,rewriteLineSignifier);
     }
     else
-    {
-        splitParagraph = splitParagraphsFrontMatter(paragraphs,rewriteLineSignifier,topicFrontMatterSeparator);
+    {   
+        splitParagraph = splitParagraphsFrontMatter(paragraphs);
     }
     // Complete Draft
     let completeDraft:string[] = [];
@@ -55,7 +53,7 @@ export function createFromDraft(draft:string,oldDraftNum:number){
     }
     // New Draft
     let newContent = "";
-    newContent += `\n\n## Complete ${stringifyNumber(oldDraftNum)} Draft\n\n` + completeDraft.join("\n\n")+"\n\n";
-    newContent += `# ${stringifyNumber(oldDraftNum+1)} Draft\n\n` + newDraft.join(paragraphSeparator +"\n");
+    newContent += `\n\n## Complete ${stringifyNumber(draftNum)} Draft\n\n` + completeDraft.join("\n\n")+"\n\n";
+    newContent += `# ${stringifyNumber(draftNum+1)} Draft\n\n` + newDraft.join(paragraphSeparator +"\n");
     return draft + newContent;
 }
