@@ -4,7 +4,7 @@ import { createDraftTitle } from '../drafts/createDraftTitle';
 // The function does not work well with the first draft. Go through this again.
 
 // Strip --- above and below.
-export function updateFrontmatter(frontmatter:string):[string,number]{
+export function updateFrontmatter():[string,number]{
     const editor = vscode.window.activeTextEditor;
         if (!editor || editor.document.languageId !== "markdown") {return ["",0];}
         const doc = editor.document;
