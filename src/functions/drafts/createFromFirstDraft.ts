@@ -1,37 +1,41 @@
 import * as vscode from "vscode";
+import { frontMatterIndicator } from "../../constants/frontMatterConstants";
+import { createDraftTitle } from "./createDraftTitle";
 //What should this do?
 // Add onto the draft in two ways.
 // First it should have a completed draft added onto the end of the draft.
 // Second it should add onto the 
 // Return [frontmatter,content]
 export function createFromFirstDraft(draft:string){
+    // config settings
     const config = vscode.workspace.getConfiguration('myExtension');
     const paragraphSeparator = config.get<string>("draftStyle.paragraphSeparator", '+---+');
     const topicFrontMatterSeparator = config.get<string>("draftStyle.topicFrontmatterSeparator","*---*");
     const haveTopicFrontMatter = config.get<boolean>("draftStyle.haveTopicFrontmatterSeparator",true);
     const rewriteLineSignifier = config.get<string>("draftStyle.rewriteLineSignifier",">");
     const commentLineSignifier =  config.get<string>("draftStyle.commentSignifier");
-    
+    const firstParagraphSeparator = "\n";
     const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n";
-    let paragraphs = draft.split(paragraphSeparator);
+    
+    // Remove frontmatter
+    if(draft.slice(0,3) === frontMatterIndicator){
+        draft = draft.slice(3);
+        const frontmatterIndex = draft.indexOf(frontMatterIndicator);
+        draft = draft.slice(frontmatterIndex + frontMatterIndicator.length);
+    }
+    // Remove the first Heading.
+    const firstTitle        = "# First Draft";
+    const firstTitleIndex   = draft.indexOf(firstTitle) + firstTitle.length;
+    const tempDraft         = draft.slice(firstTitleIndex);
+    let paragraphs          = tempDraft
+                .split(firstParagraphSeparator).filter((t)=> {return t.trim() !=="";});
     let splitParagraph: [string,string[]][] = [];
-    if( !haveTopicFrontMatter){
-        paragraphs.forEach((paragraph) =>{
-            const paraContent = paragraph.split(".");
-            splitParagraph.push(["",paraContent]);
-        } );
-    }
-    else{
-        paragraphs.forEach( (paragraph) =>{
-            const temp = paragraph.split(topicFrontMatterSeparator);
-            if(temp.length !== 2){
-                vscode.window.showInformationMessage("Something has gone wrong. Length is " + temp.length);
-            }
-            const paraContent = temp[1].split(".");
 
-            splitParagraph.push([temp[0],paraContent]);
-        }  );
-    }
+    paragraphs.forEach((paragraph) =>{
+        const paraContent = paragraph.split(".");
+        splitParagraph.push(["",paraContent]);
+    } );
+
 
     // Complete Draft
     let completeDraft:string[] = [];
@@ -56,7 +60,7 @@ export function createFromFirstDraft(draft:string){
             const sentences = content[1].filter((t) =>{
                 return t.trim()!=="";
              });
-            newDraft.push(topicFrontMatter+ topicFrontMatterSeparator +sentences.join(newLineSeperator)+newLineSeperator );
+            newDraft.push("\n"+topicFrontMatter+ "\n" + topicFrontMatterSeparator+ "\n" +sentences.join(newLineSeperator)+newLineSeperator );
         });
     }
     // New Draft
