@@ -99,6 +99,11 @@ suite('First Draft Create function checks',()=>{
     });
 
     test("Check create from Draft will make a new draft. Have Topic Frontmatter, have comments",async()=>{
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '',
+        });
+        await vscode.window.showTextDocument(doc);
         await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
         const newDraft = createDraft(origContent);
