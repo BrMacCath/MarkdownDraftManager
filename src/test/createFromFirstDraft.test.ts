@@ -158,7 +158,10 @@ suite('First Draft Create function checks',()=>{
         await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
         const newDraft = createDraft(origContent);
-       
+       assert.deepStrictEqual(
+            newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
+            newDraftWithTopicNoComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
+        );
     });
 
     test("Check create from Draft will make a new draft. No Topic Frontmatter, have comments",async()=>{
