@@ -4,7 +4,6 @@ import { defineConfig } from '@vscode/test-cli';
      files: 'out/test/**/*.test.js',
      coverage: {
        reporter: ['lcov', 'text'],
-       includeAll: true,
        include: ['out/**/*.js'],
        exclude: ['**/node_modules/**', 'out/test/**'],
      },
