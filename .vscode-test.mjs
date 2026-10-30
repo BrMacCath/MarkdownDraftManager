@@ -6,6 +6,6 @@ import { defineConfig } from '@vscode/test-cli';
        reporter: ['lcov', 'text'],
        includeAll: true,
        include: ['out/**/*.js'],
-       exclude: ['out/test/**'],
+       exclude: ['**/node_modules/**', 'out/test/**'],
      },
 });
