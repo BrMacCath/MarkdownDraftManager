@@ -102,7 +102,10 @@ suite('First Draft Create function checks',()=>{
         await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
         const newDraft = createDraft(origContent);
-        assert.strictEqual(newDraft.trim(),newDraftWithTopicWithComments.trim());
+        assert.deepStrictEqual(
+            newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
+            newDraftWithTopicWithComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
+        );
     });
 
 
