@@ -266,7 +266,7 @@ suite('First Draft Create function checks',()=>{
         const newDraft = createDraft(origContent);
        assert.deepStrictEqual(
             newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
-            newDraftNoTopicWithComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
+            newDraftNoTopicNoComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
         );
 
     });
