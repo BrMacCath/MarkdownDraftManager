@@ -12,9 +12,12 @@ export function createFromFirstDraft(draft:string){
     const topicFrontMatterSeparator = config.get<string>("draftStyle.topicFrontmatterSeparator","*---*");
     const haveTopicFrontMatter = config.get<boolean>("draftStyle.haveTopicFrontmatterSeparator",true);
     const rewriteLineSignifier = config.get<string>("draftStyle.rewriteLineSignifier",">");
+    const haveCommentLine = config.get<boolean>("draftStyle.haveLineComments",true);
     const commentLineSignifier =  config.get<string>("draftStyle.commentSignifier");
     const firstParagraphSeparator = "\n";
-    const newLineSeperator = "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n";
+    const newLineSeperator = haveCommentLine? 
+            "\n"+commentLineSignifier + " \n" + rewriteLineSignifier +" \n\n"
+            :"\n"+ rewriteLineSignifier +" \n\n";
     
     // Remove frontmatter
     if(draft.slice(0,3) === frontMatterIndicator){
