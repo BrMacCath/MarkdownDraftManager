@@ -98,6 +98,80 @@ I need a second paragraph to test things out
 > 
 `;
 
+const newDraftNoTopicWithComments= String.raw`---
+draftNum: 2
+completeSection: "## Complete First Draft"
+---
+# First Draft
+
+This is the content for the first draft. We will see how it works out.
+
+I need a second paragraph to test things out. This will check the paragraph separating condition.
+
+## Complete First Draft
+
+This is the content for the first draft. We will see how it works out.
+
+I need a second paragraph to test things out. This will check the paragraph separating condition.
+
+# Second Draft
+
++---+
+
+This is the content for the first draft
+* 
+> 
+
+ We will see how it works out
+* 
+> 
+
++---+
+
+I need a second paragraph to test things out
+* 
+> 
+
+ This will check the paragraph separating condition
+* 
+> 
+`;
+
+const newDraftNoTopicNoComments= String.raw`---
+draftNum: 2
+completeSection: "## Complete First Draft"
+---
+# First Draft
+
+This is the content for the first draft. We will see how it works out.
+
+I need a second paragraph to test things out. This will check the paragraph separating condition.
+
+## Complete First Draft
+
+This is the content for the first draft. We will see how it works out.
+
+I need a second paragraph to test things out. This will check the paragraph separating condition.
+
+# Second Draft
+
++---+
+
+This is the content for the first draft
+> 
+
+ We will see how it works out
+> 
+
++---+
+
+I need a second paragraph to test things out
+> 
+
+ This will check the paragraph separating condition
+> 
+`;
+
 suite('First Draft Create function checks',()=>{
     const config = vscode.workspace.getConfiguration('myExtension');
     const keyHaveTopicFrontmatter = "draftStyle.haveTopicFrontmatterSeparator";
@@ -174,6 +248,11 @@ suite('First Draft Create function checks',()=>{
         await vscode.window.showTextDocument(doc);
         await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
+        const newDraft = createDraft(origContent);
+       assert.deepStrictEqual(
+            newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
+            newDraftNoTopicWithComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
+        );
     });
 
     test("Check create from Draft will make a new draft. No Topic Frontmatter or comments",async()=>{
@@ -184,6 +263,11 @@ suite('First Draft Create function checks',()=>{
         await vscode.window.showTextDocument(doc);
         await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
+        const newDraft = createDraft(origContent);
+       assert.deepStrictEqual(
+            newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
+            newDraftNoTopicWithComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
+        );
 
     });
 }
