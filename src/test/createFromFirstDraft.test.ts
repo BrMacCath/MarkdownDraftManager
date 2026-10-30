@@ -142,6 +142,8 @@ suite('First Draft Create function checks',()=>{
         await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
         const newDraft = createDraft(origContent);
+        console.log(newDraft);
+        console.log(newDraftWithTopicWithComments);
         assert.deepStrictEqual(
             newDraft.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";}),
             newDraftWithTopicWithComments.trim().split('\n').map((t)=>{return t.trim();}).filter((t)=>{return t!== "";})
