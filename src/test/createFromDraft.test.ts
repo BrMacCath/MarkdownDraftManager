@@ -38,20 +38,29 @@ suite('Create draft function checks',()=>{
     });
     // Have a test where you put content through the create draft function
     // with different settings conditions.
-    test("Check create from Draft will make a new draft. Have Topic Frontmatter and comments",async()=>{
-    
-        await config.update('frontmatter.haveLineComments', true, vscode.ConfigurationTarget.Global);
-        await config.update('frontmatter.keyHaveTopicFrontmatter', true, vscode.ConfigurationTarget.Global);
+    test("Check create from Draft will make a new draft. Have Topic Frontmatter, have comments",async()=>{
+        await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
+        
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
             content: '---\ndraftNum: 3\ntestProperty: here\n---\nBody text',
         });
-
     });
 
     test("Check create from Draft will make a new draft. Have Topic Frontmatter, no comments",async()=>{
-        await config.update('frontmatter.haveLineComments', true, vscode.ConfigurationTarget.Global);
-        await config.update('frontmatter.keyHaveTopicFrontmatter', true, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
+        
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '---\ndraftNum: 3\ntestProperty: here\n---\nBody text',
+        });
+    });
+
+    test("Check create from Draft will make a new draft. No Topic Frontmatter, have comments",async()=>{
+        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
             content: '---\ndraftNum: 3\ntestProperty: here\n---\nBody text',
@@ -59,8 +68,9 @@ suite('Create draft function checks',()=>{
     });
 
     test("Check create from Draft will make a new draft. No Topic Frontmatter or comments",async()=>{
-        await config.update('frontmatter.haveLineComments', true, vscode.ConfigurationTarget.Global);
-        await config.update('frontmatter.keyHaveTopicFrontmatter', true, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
+        
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
             content: '---\ndraftNum: 3\ntestProperty: here\n---\nBody text',
