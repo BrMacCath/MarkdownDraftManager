@@ -115,6 +115,11 @@ suite('First Draft Create function checks',()=>{
 
 
     test("Check create from Draft will make a new draft. Have Topic Frontmatter, no comments",async()=>{
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'markdown',
+            content: '',
+        });
+        await vscode.window.showTextDocument(doc);
         await config.update(keyHaveTopicFrontmatter, true, vscode.ConfigurationTarget.Global);
         await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
         const newDraft = createDraft(origContent);
@@ -122,22 +127,24 @@ suite('First Draft Create function checks',()=>{
     });
 
     test("Check create from Draft will make a new draft. No Topic Frontmatter, have comments",async()=>{
-        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
-        await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
-            content: origContent,
+            content: '',
         });
+        await vscode.window.showTextDocument(doc);
+        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, true, vscode.ConfigurationTarget.Global);
     });
 
     test("Check create from Draft will make a new draft. No Topic Frontmatter or comments",async()=>{
-        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
-        await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
-        
         const doc = await vscode.workspace.openTextDocument({
             language: 'markdown',
-            content: origContent,
+            content: '',
         });
+        await vscode.window.showTextDocument(doc);
+        await config.update(keyHaveTopicFrontmatter, false, vscode.ConfigurationTarget.Global);
+        await config.update(keyHaveComments, false, vscode.ConfigurationTarget.Global);
+
     });
 }
 );
