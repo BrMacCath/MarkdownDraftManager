@@ -32,7 +32,6 @@ export function createFromFirstDraft(draft:string){
     let paragraphs          = tempDraft
                 .split(firstParagraphSeparator).filter((t)=> {return t.trim() !=="";});
     let splitParagraph: [string,string[]][] = [];
-
     paragraphs.forEach((paragraph) =>{
         const paraContent = paragraph.split(".");
         splitParagraph.push(["",paraContent]);
@@ -52,8 +51,12 @@ export function createFromFirstDraft(draft:string){
     // Make new draft based on the topic front matter.
     if(!haveTopicFrontMatter){
         splitParagraph.forEach((content)=>{
-            const sentences = content[1].filter((t) =>{t.trim()!=="";});
-            newDraft.push(sentences.join(newLineSeperator)+newLineSeperator );
+            console.log("content")
+            console.log(content[1].join("   "));
+            const sentences = content[1].filter((t) =>{return t.trim()!=="";});
+            console.log("sentences")
+            console.log(sentences.join(" " ));
+            newDraft.push("\n" + sentences.join(newLineSeperator)+newLineSeperator );
         });
     }
     else{
